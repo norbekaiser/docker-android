@@ -4,6 +4,7 @@ stages:
   - ndk_images
 create_base_images:
     stage: base_images
+    image: norbnorb/vcs
     only:
       - master
     script:
