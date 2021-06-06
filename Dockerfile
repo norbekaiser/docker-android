@@ -1,4 +1,4 @@
-FROM debian:stable
+FROM debian:slim
 ARG cli_tools_url=https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip
 RUN apt-get update
 RUN apt-get dist-upgrade -y
