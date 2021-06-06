@@ -19,6 +19,7 @@ create_base_images:
     script:
       - git remote set-url origin git@gitlab.norbert-ruehl.de:nruehl/docker-android
       - git checkout -B base
+      - git rm -rf .
       - git checkout ${CI_COMMIT_SHA} Dockerfile
       - git add Dockerfile
       - git config user.email "ci-runner-docker-android@norbert-ruehl.de"
