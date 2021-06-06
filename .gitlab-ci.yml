@@ -8,6 +8,7 @@ create_base_images:
     only:
       - master
     script:
+      - git branch
       - git checkout -B base
       - git branch
       - git checkout master Dockerfile
