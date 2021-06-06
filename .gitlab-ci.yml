@@ -11,5 +11,7 @@ create_base_images:
       - git checkout -B base
       - git checkout ${CI_COMMIT_SHA} Dockerfile
       - git add Dockerfile
-      - git commit -am "Updated Dockerfile From Master"
+      - git config user.email "ci-runner-docker-android@norbert-ruehl.de"
+      - git config user.name "ci runner"
+      - git commit -am "[CI] Updated Dockerfile From Master"
       - git push -u origin base 
