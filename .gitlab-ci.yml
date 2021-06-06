@@ -8,9 +8,8 @@ create_base_images:
     only:
       - master
     script:
-      - |
-        git checkout -B base
-        git checkout master Dockerfile
-        git add Dockerfile
-        git commit -am "Updated Dockerfile From Master"
-        git push -u origin base 
+      - git checkout -B base
+      - git checkout master Dockerfile
+      - git add Dockerfile
+      - git commit -am "Updated Dockerfile From Master"
+      - git push -u origin base 
