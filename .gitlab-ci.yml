@@ -10,7 +10,7 @@ create_base_images:
     script:
       - |
         git checkout -B base
-        git checkout master ./Dockerfile
+        git checkout master Dockerfile
         git add Dockerfile
         git commit -am "Updated Dockerfile From Master"
         git push -u origin base 
