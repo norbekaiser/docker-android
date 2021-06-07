@@ -48,7 +48,7 @@ create_sdk_images:
           git rm -rf .
           echo "FROM norbnorb/android:base" > Dockerfile
           echo "#By Using the Image you are Accepting the Terms and conditions of the respective Licenses" >> Dockerfile
-          echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"platform-tools\"" >> Dockerfile
+          #echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"platform-tools\"" >> Dockerfile
           echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"platforms;android-${ver}\"" >> Dockerfile
           echo "RUN rm -rf /opt/Android/licenses" >> Dockerfile
           echo "#Licenses Need to be Accepted e.g. by Adding"
@@ -71,7 +71,7 @@ create_ndk_images:
           git rm -rf .
           echo "FROM norbnorb/android:base" > Dockerfile
           echo "#By Using the Image you are Accepting the Terms and conditions of the respective Licenses" >> Dockerfile
-          echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"platform-tools\"" >> Dockerfile
+          #echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"platform-tools\"" >> Dockerfile
           echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"platforms;android-${ver}\"" >> Dockerfile
           echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"ndk-bundle\"" >> Dockerfile
           echo "RUN rm -rf /opt/Android/licenses" >> Dockerfile
