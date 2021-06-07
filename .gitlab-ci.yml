@@ -1,0 +1,83 @@
+variables:
+  GIT_STRATEGY: clone
+stages:
+  - base_images
+  - api_images
+.ssh_settings: &ssh_settings
+    image: norbnorb/vcs
+    only:
+      - master
+    before_script:
+      - |
+        echo "Preparing SSH"
+        mkdir -p ~/.ssh
+        echo "Host ${REMOTE_REPO}" > ~/.ssh/config
+        echo "User git" >> ~/.ssh/config
+        echo "IdentityFile ${SSH_KEY}" >> ~/.ssh/config
+        ssh-keyscan -t rsa ${REMOTE_REPO} >> ~/.ssh/known_hosts
+        chmod 600 ${SSH_KEY}
+    after_script:
+      - |
+        echo "Cleaning Up"
+        rm -rf ~/.ssh
+create_base_images:
+    stage: base_images
+    <<: *ssh_settings
+    script:
+      - git remote set-url origin ${REMOTE_URL_ORIGIN}
+      - |
+        git config user.email "${RUNNER_EMAIL}"
+        git config user.name "${RUNNER_NAME}"
+      - git checkout base || git checkout -b base
+      - git rm -rf .
+      - git checkout ${CI_COMMIT_SHA} Dockerfile
+      - git add Dockerfile
+      - git commit -m "[CI] Updated Dockerfile From Master" || true
+      - git push -u origin base
+create_sdk_images:
+    stage: api_images
+    <<: *ssh_settings
+    script:
+      - git remote set-url origin ${REMOTE_URL_ORIGIN}
+      - |
+        git config user.email "${RUNNER_EMAIL}"
+        git config user.name "${RUNNER_NAME}"
+      - |
+        for ver in $(seq 10 30); do
+          git checkout api-${ver} || git checkout -b api-${ver}
+          git rm -rf .
+          echo "FROM norbnorb/android:base" > Dockerfile
+          echo "#By Using the Image you are Accepting the Terms and conditions of the respective Licenses" >> Dockerfile
+          echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"platform-tools\"" >> Dockerfile
+          echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"platforms;android-${ver}\"" >> Dockerfile
+          echo "RUN rm -rf /opt/Android/licenses" >> Dockerfile
+          echo "#Licenses Need to be Accepted e.g. by Adding"
+          echo "#RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager --licenses" >> Dockerfile
+          git add Dockerfile
+          git commit -m "[CI] Updated Dockerfile From Master For Api Level ${ver}" || true
+          git push -u origin api-${ver}
+        done
+create_ndk_images:
+    stage: api_images
+    <<: *ssh_settings
+    script:
+      - git remote set-url origin ${REMOTE_URL_ORIGIN}
+      - |
+        git config user.email "${RUNNER_EMAIL}"
+        git config user.name "${RUNNER_NAME}"
+      - |
+        for ver in $(seq 10 30); do
+          git checkout api-${ver}+ndk || git checkout -b api-${ver}+ndk
+          git rm -rf .
+          echo "FROM norbnorb/android:base" > Dockerfile
+          echo "#By Using the Image you are Accepting the Terms and conditions of the respective Licenses" >> Dockerfile
+          echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"platform-tools\"" >> Dockerfile
+          echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"platforms;android-${ver}\"" >> Dockerfile
+          echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"ndk-bundle\"" >> Dockerfile
+          echo "RUN rm -rf /opt/Android/licenses" >> Dockerfile
+          echo "#Licenses Need to be Accepted e.g. by Adding"
+          echo "#RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager --licenses" >> Dockerfile
+          git add Dockerfile
+          git commit -m "[CI] Updated Dockerfile From Master For Api Level ${ver}" || true
+          git push -u origin api-${ver}+ndk
+        done
