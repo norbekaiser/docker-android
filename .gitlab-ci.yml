@@ -50,9 +50,9 @@ create_sdk_images:
           echo "#By Using the Image you are Accepting the Terms and conditions of the respective Licenses" >> Dockerfile
           #echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"platform-tools\"" >> Dockerfile
           echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"platforms;android-${ver}\"" >> Dockerfile
-          echo "RUN rm -rf /opt/Android/licenses" >> Dockerfile
-          echo "#Licenses Need to be Accepted e.g. by Adding"
-          echo "#RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager --licenses" >> Dockerfile
+          #echo "RUN rm -rf /opt/Android/licenses" >> Dockerfile
+          #echo "#Licenses Need to be Accepted e.g. by Adding"
+          echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager --licenses" >> Dockerfile
           git add Dockerfile
           git commit -m "[CI] Updated Dockerfile From Master For Api Level ${ver}" || true
           git push -u origin api-${ver}
@@ -74,9 +74,9 @@ create_ndk_images:
           #echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"platform-tools\"" >> Dockerfile
           echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"platforms;android-${ver}\"" >> Dockerfile
           echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager \"ndk-bundle\"" >> Dockerfile
-          echo "RUN rm -rf /opt/Android/licenses" >> Dockerfile
-          echo "#Licenses Need to be Accepted e.g. by Adding"
-          echo "#RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager --licenses" >> Dockerfile
+          #echo "RUN rm -rf /opt/Android/licenses" >> Dockerfile
+          #echo "#Licenses Need to be Accepted e.g. by Adding"
+          echo "RUN  yes | /opt/Android/cmdline-tools/latest/bin/sdkmanager --licenses" >> Dockerfile
           git add Dockerfile
           git commit -m "[CI] Updated Dockerfile From Master For Api Level ${ver}" || true
           git push -u origin api-${ver}+ndk
