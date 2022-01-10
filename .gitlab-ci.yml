@@ -43,7 +43,7 @@ create_sdk_images:
         git config user.email "${RUNNER_EMAIL}"
         git config user.name "${RUNNER_NAME}"
       - |
-        for ver in $(seq 10 30); do
+        for ver in $(seq 10 31); do
           git checkout api-${ver} || git checkout -b api-${ver}
           git rm -rf .
           echo "FROM norbnorb/android:base" > Dockerfile
